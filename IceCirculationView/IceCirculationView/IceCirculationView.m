@@ -16,9 +16,11 @@
  */
 static NSInteger indexCount;
 
-@interface IceCirculationView ()<UIScrollViewDelegate>
+@interface IceCirculationView ()<UIScrollViewDelegate,IceImageViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *myScrollView;
+
+@property (nonatomic, strong) UITapGestureRecognizer *ges;
 
 @property (nonatomic, strong) NSMutableArray *imgNameArr;
 @property (nonatomic, strong) NSMutableArray *imgViewArr;
@@ -83,22 +85,30 @@ static NSInteger indexCount;
     
     NSInteger imgCount = 3;
     
+    _ges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchPic)];
+    
     for (int i = 0; i < imgCount; i++) {
         IceImageView *imgView = [[IceImageView alloc] init];
         imgView.frame = CGRectMake(i * self.width, 0, self.width, _myScrollView.height);
+        imgView.delegate = self;
         [_imgViewArr addObject:imgView];
         [_myScrollView addSubview:imgView];
         
-//        if (i == 1) {
-//            UITapGestureRecognizer *ges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchPic)];
-//            [imgView addGestureRecognizer:ges];
-//            
-//            imgView.userInteractionEnabled = YES;
-//        }
+        [imgView addGestureRecognizer:_ges];
+        imgView.userInteractionEnabled = YES;
+        
     }
     _myScrollView.contentSize = CGSizeMake(self.width * imgCount, _myScrollView.height);
 }
-- (void)changgePage{
+
+- (void)setTouchEnlarge:(BOOL)touchEnlarge {
+    _touchEnlarge = touchEnlarge;
+    for (UIImageView *imgView in _imgViewArr) {
+        [imgView removeGestureRecognizer:_ges];
+    }
+}
+
+- (void)changgePage {
     _isTimer = YES;
     
     indexCount ++;
@@ -232,4 +242,13 @@ static NSInteger indexCount;
 {
     return self.pageControl.currentPage;
 }
+
+- (void)imageViewBeganToEnlarge{
+    [self stopTimer];
+}
+
+- (void)imageViewBeganToClose{
+    [self startTimer];
+}
+
 @end

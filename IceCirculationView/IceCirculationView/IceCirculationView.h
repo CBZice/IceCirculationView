@@ -44,6 +44,23 @@
  */
 -(instancetype)initWithFrame:(CGRect)frame Images:(NSArray *)imageArr;
 
+/**
+    点击效果改为放大图片,默认点击效果为触发回调事件
+ */
+@property (nonatomic, assign) BOOL touchEnlarge;
+
+/**
+ 开始计时器
+ */
+- (void)startTimer;
+
+/**
+ 结束计时器
+ */
+- (void)stopTimer;
+
+
 @property (nonatomic, weak) id<IceCirculationViewDelegate> delegate;
+
 
 @end

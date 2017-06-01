@@ -13,6 +13,10 @@
 @optional
 - (void)imageView:(UIImageView *)imageView LongPressGesState:(UIGestureRecognizerState)state;
 
+- (void)imageViewBeganToEnlarge;
+
+- (void)imageViewBeganToClose;
+
 @end
 
 @interface IceImageView : UIImageView

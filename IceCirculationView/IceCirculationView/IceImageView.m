@@ -33,6 +33,9 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if (!_openTapGes) return;
+    if ([self.delegate respondsToSelector:@selector(imageViewBeganToEnlarge)]) {
+        [self.delegate imageViewBeganToEnlarge];
+    }
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     _supRect = [self.superview convertRect:self.frame toView:window];
     if (!shandowView) {
@@ -58,6 +61,9 @@
 }
 
 - (void)cancel:(UITapGestureRecognizer *)tapGes {
+    if ([self.delegate respondsToSelector:@selector(imageViewBeganToClose)]) {
+        [self.delegate imageViewBeganToClose];
+    }
     [UIView animateWithDuration:0.5 animations:^{
         shandowView.frame = _supRect;
         backView.alpha = 0;
